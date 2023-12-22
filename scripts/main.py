@@ -1,6 +1,9 @@
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 import requests
@@ -18,6 +21,8 @@ navegador = webdriver.Chrome(service=servico)
 
 navegador.maximize_window()
 
+
+
 def facebook_login(url_face):
     
     #url_face = "https://www.facebook.com/?locale=pt_BR"
@@ -32,18 +37,20 @@ def facebook_login(url_face):
         for itens in dados_login:
             email = itens['email']
             senha = itens['senha']
-            
-    navegador.find_element('id', 'email').send_keys(email)
-    navegador.find_element('id', 'pass').send_keys(senha)
-
-    time.sleep(3)
     
-    btn_entrar = navegador.find_element('id', 'u_0_5_vB')
-    btn_entrar.click() 
+    func_send_keys(10, 'email', email)
+    func_send_keys(10, 'pass', senha)        
+    
+    #time.sleep(2)
+    
+    
+    navegador.find_element('xpath', '/html/body/div[1]/div[1]/div[1]/div/div/div/div[2]/div/div[1]/form/div[2]/button').click()
         
-    time.sleep(10)
+    time.sleep(5)
 
+    navegador.find_element('xpath', '/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div[1]/div/div/div[1]/div/div/div[1]/div[1]/ul/li[4]/div/a').click()
     
+    time.sleep(10)
         
     return
 
@@ -61,7 +68,22 @@ def supabase_read(url, api, auth):
     return response.json()
 
 
-login = facebook_login("https://www.facebook.com/?locale=pt_BR")
 
+def func_send_keys(espera, id, texto):
 
+    tempo_espera = espera
+    
+    try:     
+        elemento = WebDriverWait(navegador, tempo_espera).until(
+            EC.visibility_of_element_located((By.ID, id))
+            )
+            
+        print('Elemento encontrado', elemento.text)
         
+    finally:
+        navegador.find_element(By.ID, id).send_keys(texto)
+        print('----')
+    
+    return
+
+login = facebook_login("https://www.facebook.com/?locale=pt_BR")
