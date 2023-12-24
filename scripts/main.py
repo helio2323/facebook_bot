@@ -4,6 +4,12 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options
+
+# Configurar as opções do Chrome
+chrome_options = Options()
+chrome_options.add_argument("--disable-notifications")
+
 
 
 import requests
@@ -12,6 +18,8 @@ import time
 servico = Service(ChromeDriverManager().install())
 
 navegador = webdriver.Chrome(service=servico)
+navegador = webdriver.Chrome(options=chrome_options)
+
 
 #funcao para realizar login no facebook (necessario 2 fatores talvez)
 #Loop para verificar se é necessário fazer algum post
@@ -43,12 +51,15 @@ def facebook_login(url_face):
     
     #time.sleep(2)
     
+    func_click(10, '/html/body/div[1]/div[1]/div[1]/div/div/div/div[2]/div/div[1]/form/div[2]/button')
     
-    navegador.find_element('xpath', '/html/body/div[1]/div[1]/div[1]/div/div/div/div[2]/div/div[1]/form/div[2]/button').click()
-        
-    time.sleep(5)
+    time.sleep(2)
+    
 
-    navegador.find_element('xpath', '/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div[1]/div/div/div[1]/div/div/div[1]/div[1]/ul/li[4]/div/a').click()
+    
+    func_click(10, '/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div[1]/div/div/div[1]/div/div/div[1]/div[1]/ul/li[4]/div/a')
+
+
     
     time.sleep(10)
         
@@ -85,5 +96,21 @@ def func_send_keys(espera, id, texto):
         print('----')
     
     return
+
+
+def func_click(espera, xpath):
+    tempo_espera = espera
+    
+    try:
+        elemento = WebDriverWait(navegador, tempo_espera).until(
+            EC.visibility_of_element_located((By.XPATH, xpath))
+        )
+        
+        print('Elemento encontrado', elemento.text)
+    
+    finally:
+        navegador.find_element(By.XPATH, xpath).click()
+    return
+
 
 login = facebook_login("https://www.facebook.com/?locale=pt_BR")
