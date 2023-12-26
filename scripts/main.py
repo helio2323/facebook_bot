@@ -139,13 +139,40 @@ def listar_salvar_grupos():
     #elemen = navegador.find_element(By.XPATH, '/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[2]/div[1]/div[1]/div/div[2]/div/div/div/div/label/input')
     #elemen.send_keys(Keys.ENTER)
 
-    time.sleep(5)
-    
     #func_click(10, '/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div[1]/div/div[2]/div[1]/div[2]/div/div/div[2]/div/div[9]/div/a/div[1]')
 
+    xpath = '//*[contains(@class, "x1i10hfl") and contains(@class, "xjbqb8w") and contains(@class, "x6umtig") and contains(@class, "x1b1mbwd") and contains(@class, "xaqea5y") and contains(@class, "xav7gou") and contains(@class, "x9f619") and contains(@class, "x1ypdohk") and contains(@class, "xt0psk2") and contains(@class, "xe8uvvx") and contains(@class, "xdj266r") and contains(@class, "x11i5rnm") and contains(@class, "xat24cr") and contains(@class, "x1mh8g0r") and contains(@class, "xexx8yu") and contains(@class, "x4uap5") and contains(@class, "x18d9i69") and contains(@class, "xkhd6sd") and contains(@class, "x16tdsg8") and contains(@class, "x1hl2dhg") and contains(@class, "xggy1nq") and contains(@class, "x1a2a7pz") and contains(@class, "xt0b8zv") and contains(@class, "xzsf02u") and contains(@class, "x1s688f")]'
+    xpath_image = '//*[contains(@class, "x193iq5w") and contains(@class, "xeuugli") and contains(@class, "x13faqbe") and contains(@class, "x1vvkbs") and contains(@class, "x1xmvt09") and contains(@class, "x1lliihq") and contains(@class, "x1s928wv") and contains(@class, "xhkezso") and contains(@class, "x1gmr53x") and contains(@class, "x1cpjm7i") and contains(@class, "x1fgarty") and contains(@class, "x1943h6x") and contains(@class, "xudqn12") and contains(@class, "x3x7a5m") and contains(@class, "x6prxxf") and contains(@class, "xvq8zen") and contains(@class, "xo1l8bm") and contains(@class, "xi81zsa") and contains(@class, "x1yc453h")]'
+    xpath_participando = "//*[contains(@class, 'x193iq5w') and contains(@class, 'xeuugli') and contains(@class, 'x13faqbe') and contains(@class, 'x1vvkbs') and contains(@class, 'x1xmvt09') and contains(@class, 'x1lliihq') and contains(@class, 'x1s928wv') and contains(@class, 'xhkezso') and contains(@class, 'x1gmr53x') and contains(@class, 'x1cpjm7i') and contains(@class, 'x1fgarty') and contains(@class, 'x1943h6x') and contains(@class, 'xudqn12') and contains(@class, 'x3x7a5m') and contains(@class, 'x6prxxf') and contains(@class, 'xvq8zen') and contains(@class, 'x1s688f') and contains(@class, 'x1mvi0mv')]"
     
-    time.sleep(10)
+        
+    elementos = navegador.find_elements(By.XPATH, xpath)
+    elementos_xpath = navegador.find_elements(By.XPATH, xpath_image)
+    elementos_participando = navegador.find_elements(By.XPATH, xpath_participando)
     
-    return
+    print(len(elementos))
+
+    
+    for i in range(1, len(elementos)):
+        elemento = elementos[i]
+        print(i)
+        print(elemento.get_attribute('href'))
+        print(elemento.text)
+        url_group = elemento.get_attribute('href')
+        titulo_group = elemento.text
+        
+    for i in range(1, len(elementos_xpath)):
+        elemento = elementos_xpath[i]
+        print(elemento.text)
+        infos_1 = elemento.text
+        
+    for i in range(1, len(elementos_participando)):
+        elemento = elementos_participando[i]
+        participando = elemento.text
+        print(elemento.text)    
+        
+        
+        
+        
 
 grupos = listar_salvar_grupos()
