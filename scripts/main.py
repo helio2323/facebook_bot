@@ -153,7 +153,7 @@ def listar_salvar_grupos():
     print(len(elementos))
 
     
-    for i in range(1, len(elementos)):
+    for i in range(0, len(elementos)):
         elemento = elementos[i]
         print(i)
         print(elemento.get_attribute('href'))
@@ -171,7 +171,11 @@ def listar_salvar_grupos():
         participando = elemento.text
         print(elemento.text)    
         
-        
+    for i in range(min(len(elementos), len(elementos_xpath), len(elementos_participando))):
+        print(elementos[i].text)
+        print(elementos[i].get_attribute('href'))
+        print(elementos_xpath[i].text)
+        print(elementos_participando[i].text)
         
         
 
