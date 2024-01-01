@@ -8,6 +8,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 
 from api_call import supabase_read
+from api_call import imputar_dados
 
 # Configurar as opções do Chrome
 chrome_options = Options()
@@ -151,32 +152,41 @@ def listar_salvar_grupos():
     elementos_participando = navegador.find_elements(By.XPATH, xpath_participando)
     
     print(len(elementos))
-
     
-    for i in range(0, len(elementos)):
-        elemento = elementos[i]
-        print(i)
-        print(elemento.get_attribute('href'))
-        print(elemento.text)
-        url_group = elemento.get_attribute('href')
-        titulo_group = elemento.text
-        
-    for i in range(1, len(elementos_xpath)):
-        elemento = elementos_xpath[i]
-        print(elemento.text)
-        infos_1 = elemento.text
-        
-    for i in range(1, len(elementos_participando)):
-        elemento = elementos_participando[i]
-        participando = elemento.text
-        print(elemento.text)    
-        
-    for i in range(min(len(elementos), len(elementos_xpath), len(elementos_participando))):
-        print(elementos[i].text)
-        print(elementos[i].get_attribute('href'))
-        print(elementos_xpath[i].text)
-        print(elementos_participando[i].text)
-        
-        
+    grupos_ = supabase_read('https://qlisjdanugwnechsmeaj.supabase.co/rest/v1/grupos_facebook?select=*',
+                                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaXNqZGFudWd3bmVjaHNtZWFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODEyNTMyMTUsImV4cCI6MTk5NjgyOTIxNX0.8YR-DaH-nG4yQD-P6g1ioOWfkiJEAp1i4EOb3TIEclk",
+                                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaXNqZGFudWd3bmVjaHNtZWFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODEyNTMyMTUsImV4cCI6MTk5NjgyOTIxNX0.8YR-DaH-nG4yQD-P6g1ioOWfkiJEAp1i4EOb3TIEclk")
+    
+    
+    links_existentes = {item['link_grupo'] for item in grupos_}
+    
+    if not grupos_:  
+        for i in range(min(len(elementos), len(elementos_xpath), len(elementos_participando))):
+            
+            nome_grupo = elementos[i].text
+            link_grupo = elementos[i].get_attribute('href')
+            infos_1 = elementos_xpath[i].text
+            participando = elementos_participando[i].text#necessario achar outro metodo de verificarcao
+            if nome_grupo != '':
+                imput_dados = imputar_dados(nome_grupo, link_grupo, infos_1, participando)
+
+    else:
+        for i in range(min(len(elementos), len(elementos_xpath), len(elementos_participando))):
+            
+            nome_grupo = elementos[i].text
+            link_grupo = elementos[i].get_attribute('href')
+            infos_1 = elementos_xpath[i].text
+            participando = elementos_participando[i].text#necessario achar outro metodo de verificarcao    
+
+
+            
+            if nome_grupo != '':
+                if link_grupo in links_existentes:
+                    print('Esse grupo já consta na casa de dados')    
+                else:
+                    imput_dados = imputar_dados(nome_grupo, link_grupo, infos_1, participando)
+                
+    
+           
 
 grupos = listar_salvar_grupos()
