@@ -44,4 +44,14 @@ def imputar_dados(nome_grupo, link_grupo, infos_1, participando):
                 print("Falha ao enviar dados. Código de status:", response.status_code)
     except requests.RequestException as e:
         print("Erro de requisição:", e)
-   
+
+
+def ler_postagens(url):
+    response = requests.request("GET", url)
+    
+    print(response.json())
+    
+    return response.json()
+
+def salvar_dados():
+    ...
