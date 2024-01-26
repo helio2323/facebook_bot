@@ -1,4 +1,6 @@
             nome_grupo = elementos[i].text
             link_grupo = elementos[i].get_attribute('href')
             infos_1 = elementos_xpath[i].text
-            participando = elementos_participando[i].text#necessario achar outro metodo de verificarcao
+            participando = elementos_participando[i].text
+            
+            #necessario achar outro metodo de verificarcao
